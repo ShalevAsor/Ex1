@@ -5,6 +5,7 @@ import java.util.List;
 public class WGraph_Algo implements weighted_graph_algorithms {
     private weighted_graph graph;
 
+
     /**
      * This method initialization this graph to given graph
      * @param g

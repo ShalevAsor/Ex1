@@ -33,7 +33,7 @@ public class WGraph_DS implements weighted_graph{
         }
     }
     //-------------------NodeInfo-----------------//
-    static class NodeInfo implements node_info{
+    public static class NodeInfo implements node_info{
         private int _key=0;
         private String _info;
         private double _tag;
