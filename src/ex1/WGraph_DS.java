@@ -11,7 +11,7 @@ public class WGraph_DS implements weighted_graph{
     private HashMap<Integer,Edge> edges=new HashMap<Integer, Edge>();
     private HashMap<Integer,HashMap<Integer,node_info>> neighbors=new HashMap<Integer,HashMap<Integer,node_info>>();
     private int ModeCount=0;
-//update test
+//update testss
     /*
     This private class represent an edge in the graph . every edge have a Svertex(the node thats the edge is start from)
     and Evertex(the node destination), every edge have a weight.
