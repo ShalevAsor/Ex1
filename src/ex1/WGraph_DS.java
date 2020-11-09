@@ -46,6 +46,11 @@ public class WGraph_DS implements weighted_graph{
         public NodeInfo(int key){
             this._key=key;
         }
+        public NodeInfo(node_info n){
+            this._key=n.getKey();
+            this._tag=n.getTag();
+            this._info=n.getInfo();
+        }
 
         /**
          * This method return this node key
