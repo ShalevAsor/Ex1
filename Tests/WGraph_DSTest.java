@@ -1,10 +1,9 @@
-import ex1.WGraph_DS;
 import ex1.node_info;
 import ex1.*;
 import ex1.weighted_graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
+import ex1.WGraph_DS;
 import java.util.Iterator;
 
 class WGraph_DSTest {
@@ -45,8 +44,9 @@ class WGraph_DSTest {
         g3.connect(4,5,0.1);
         Assertions.assertTrue(g3.hasEdge(1,2));
         Assertions.assertFalse(g3.hasEdge(1,7));
-        Assertions.assertFalse(g3.hasEdge(2,4));
+        Assertions.assertTrue(g3.hasEdge(2,4));
         Assertions.assertTrue(g3.hasEdge(4,5));
+        Assertions.assertFalse(g3.hasEdge(1,8));
     }
     @Test
     public void getEdgeTest(){
@@ -61,8 +61,8 @@ class WGraph_DSTest {
         Assertions.assertEquals(8.6,g4.getEdge(1,3));
         Assertions.assertEquals(6,g4.getEdge(2,4));
         Assertions.assertEquals(6,g4.getEdge(4,2));
-        Assertions.assertEquals(-1,g4.getEdge(4,1));
-        Assertions.assertEquals(-1,g4.getEdge(1,4));
+        Assertions.assertEquals(0,g4.getEdge(4,1));
+        Assertions.assertEquals(0,g4.getEdge(1,4));
         Assertions.assertEquals(2,g4.getEdge(5,3));
         Assertions.assertEquals(-1,g4.getEdge(8,3));
     }
@@ -86,9 +86,9 @@ class WGraph_DSTest {
        g6.connect(1,3,0);
        g6.connect(1,5,2);
        g6.connect(1,4,0);
-       Assertions.assertEquals(3,g6.getV(1).size());
+       Assertions.assertEquals(4,g6.getV(1).size());
        Iterator<node_info> it= g6.getV(1).iterator();
-       node_info pointer = new WGraph_DS.NodeInfo();
+       node_info pointer = g6.getNode(1);
        while(it.hasNext()){
            pointer=it.next();
            if(pointer.getKey()==3){
@@ -116,13 +116,14 @@ class WGraph_DSTest {
    Assertions.assertEquals(1,g7.getV(2).size());
    g7.removeNode(3);
    Assertions.assertEquals(0,g7.getV(2).size());
-   Assertions.assertEquals(0,g7.getEdges().size());
+   Assertions.assertEquals(0,g7.edgeSize());
    g7.connect(2,2,1);
-   Assertions.assertEquals(0,g7.getEdges().size());
+   Assertions.assertEquals(0,g7.edgeSize());
    }
  @Test
     public void removeEdgeTest(){
      WGraph_DS g8=(WGraph_DS)this.graphCreator();
+     g8.removeEdge(16,2);
      g8.connect(1,2,1);
      g8.connect(1,3,1);
      g8.connect(1,4,1);
@@ -139,10 +140,10 @@ class WGraph_DSTest {
      g8.removeEdge(1,2);
      g8.removeEdge(1,4);
      g8.removeEdge(1,3);
-     Assertions.assertEquals(0,g8.getEdges().size());
+     Assertions.assertEquals(0,g8.edgeSize());
      Iterator<node_info> it =g8.getV().iterator();
      while(it.hasNext()) {
-         Assertions.assertEquals(0, g8.getNeighbors().get(it.next().getKey()).size());
+         Assertions.assertEquals(0, g8.getV(it.next().getKey()).size());
      }
 
  }
