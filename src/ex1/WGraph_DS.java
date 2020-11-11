@@ -1,9 +1,6 @@
 package ex1;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 
 public class WGraph_DS implements weighted_graph{
@@ -223,7 +220,12 @@ public class WGraph_DS implements weighted_graph{
 
     @Override
     public Collection<node_info> getV(int node_id) {
-        return this.neighbors.get(node_id).values();
+        if(this.vertices.containsKey(node_id)){
+        return this.neighbors.get(node_id).values();}
+        else{
+            List<node_info> emptyCollection=new LinkedList<>();
+            return emptyCollection;
+        }
     }
 
     /**
@@ -299,17 +301,17 @@ public class WGraph_DS implements weighted_graph{
         return this.ModeCount;
     }
 
-//    public HashMap<Integer, Edge> getEdges() {
-//        return this.edges;
-//    }
-//
-//    public HashMap<Integer, HashMap<Integer, node_info>> getNeighbors() {
-//        return this.neighbors;
-//    }
-//
-//    public HashMap<Integer, node_info> getVertices() {
-//        return this.vertices;
-//    }
+    public HashMap<Integer, Edge> getEdges() {
+        return this.edges;
+    }
+
+    public HashMap<Integer, HashMap<Integer, node_info>> getNeighbors() {
+        return this.neighbors;
+    }
+
+    public HashMap<Integer, node_info> getVertices() {
+        return this.vertices;
+    }
 
     public boolean equals(int node_key, Object o) {
         if (this == o) return true;

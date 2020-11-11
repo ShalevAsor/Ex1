@@ -46,5 +46,29 @@ class WGraph_AlgoTest {
         Assertions.assertEquals(0,g1.getGraph().edgeSize());
 
     }
-  
+  @Test //at the first part of this test i will check if the graph was copied with all of his vertices and his neighbors
+  //at the second part i will test that it is a deep copy, i will remove an  vertex from the copy, and test if there is
+  // any change in the original graph.
+    public void copyTest(){
+        weighted_graph_algorithms g2=this.graphCreator1();
+        weighted_graph g3=g2.copy();
+        //part one
+        Assertions.assertEquals(g2.getGraph().nodeSize(),g3.nodeSize());
+        Assertions.assertEquals(g2.getGraph().edgeSize(),g3.edgeSize());
+        int i=1,index =0,size=g3.nodeSize();
+      while(index<size){
+          Assertions.assertEquals(g3.getV(i).size(),g2.getGraph().getV(i).size());
+          index++;
+      }
+      //part two
+      g3.removeNode(1);
+      Assertions.assertNotEquals(g3.nodeSize(),g2.getGraph().nodeSize());
+      g3.addNode(6);
+      g3.connect(2,3,1);
+      g3.connect(4,6,1);
+      Assertions.assertNotEquals(g3.getV(2).size(),g2.getGraph().getV(2).size());
+      Assertions.assertNotEquals(g3.getV(6).size(),g2.getGraph().getV(6).size());
+
+
+  }
 }
