@@ -1,9 +1,7 @@
 package ex1;
 import ex1.WGraph_DS.*;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class WGraph_Algo implements weighted_graph_algorithms {
     private weighted_graph graph=new WGraph_DS();
@@ -56,7 +54,11 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 
     @Override
     public boolean isConnected() {
-        return false;
+        if(this.graph.nodeSize()==0)return true;//empty graph is connected
+        if(this.Bfs(this.graph.getV().iterator().next().getKey()).size()==this.graph.nodeSize()){
+            return true;}//if the list size thats returned from the Bfs=this graph size>>>its true
+        else{
+            return false;}
     }
 
     @Override
@@ -77,5 +79,43 @@ public class WGraph_Algo implements weighted_graph_algorithms {
     @Override
     public boolean load(String file) {
         return false;
+    }
+    //---------------BFS ALGO-------------//
+    public List<node_info> Bfs(int start){
+        weighted_graph g=new WGraph_DS();
+        g=this.graph;
+        Queue<node_info> queue=new LinkedList<node_info>();
+        List<node_info> list=new ArrayList<node_info>();
+        g.getNode(start).setInfo("grey");//-mark as "grey" (visited)
+        g.getNode(start).setTag(0);//first node tag as 0
+        queue.add(g.getNode(start));//add the start node to the queue
+        list.add(g.getNode(start));//add the first node to the list
+        while(!queue.isEmpty()){
+            Collection<node_info> listOfNei=g.getV(queue.peek().getKey());//pointer to start node neighbors
+            Iterator<node_info> it=listOfNei.iterator();
+            while(it.hasNext()){
+                node_info node=it.next();
+                if(node.getInfo()=="white"){//if the first nei isnt visited
+                    queue.add(node);//add him to the queue
+                    list.add(node);//add him to the list
+                    node.setInfo("grey");//mark him as visited
+                    if(list.size()==1){//if this is the fist nei
+                        node.setTag(1);
+                    }
+                    else{
+                        node.setTag(queue.peek().getTag()+1);
+                    }
+                }
+            }
+            queue.remove();
+        }
+        //remark all the vertices in the graph for the next use in this function
+        Iterator<node_info> it= this.graph.getV().iterator();
+        while(it.hasNext()){
+            node_info pointer=it.next();
+            pointer.setInfo("white");
+            pointer.setTag(-1);
+        }
+        return list;
     }
 }

@@ -71,4 +71,38 @@ class WGraph_AlgoTest {
 
 
   }
+  @Test
+    public void isConnectedTest(){
+        weighted_graph g4=new WGraph_DS();
+      weighted_graph_algorithms tGraph=new WGraph_Algo();
+        int i=1,size=500;
+        while(i<=size){
+        g4.addNode(i);
+        i++;}
+        int index=0,numOfNodes=g4.nodeSize();
+        while(index<numOfNodes-1){
+            g4.connect(index+1,index+2,1);
+            index++;
+        }
+       tGraph.init(g4);
+
+        Assertions.assertTrue(tGraph.isConnected());//basic connected graph with 500 nodes 499 edges
+      weighted_graph g5=new WGraph_DS();
+      int i2=150,size2=50150;//graph with 50000 nodes
+      g5.addNode(149);
+      while(i2<=size2){
+          g5.addNode(i2);
+          g5.connect(i2,i2-1,1);
+          i2++;
+      }
+      i2=150;
+      while(i2<size2) {
+          g4.connect(i2, i2 + 4, 2);
+          i2 += 3;
+      }
+      Assertions.assertTrue(tGraph.isConnected());
+      tGraph.getGraph().removeEdge(149,150);
+      Assertions.assertFalse(tGraph.isConnected());
+  }
+
 }

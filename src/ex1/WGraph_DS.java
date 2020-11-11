@@ -38,7 +38,7 @@ public class WGraph_DS implements weighted_graph{
     //-------------------NodeInfo-----------------//
     private static class NodeInfo implements node_info{
         private int _key=0;
-        private String _info;
+        private String _info="white";
         private double _tag;// the tag represent the edge weight
         private static int id = 1;
 
