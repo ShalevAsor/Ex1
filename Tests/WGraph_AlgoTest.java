@@ -104,5 +104,24 @@ class WGraph_AlgoTest {
       tGraph.getGraph().removeEdge(149,150);
       Assertions.assertFalse(tGraph.isConnected());
   }
-
+@Test
+    public void shortestPathDistTest(){
+    weighted_graph g6=new WGraph_DS();
+    weighted_graph_algorithms g7=new WGraph_Algo();
+    g7.init(g6);
+    g6.addNode(1);
+    g6.addNode(2);
+    g6.addNode(3);
+    g6.connect(1,2,1);
+    g6.connect(1,3,8);
+    g6.connect(2,3,2);
+    Assertions.assertEquals(3,g7.shortestPathDist(1,3));
+    g6.addNode(4);
+    g6.addNode(5);
+    g6.connect(4,5,0.1);
+    Assertions.assertEquals(3,g7.shortestPathDist(1,3));
+    g6.connect(2,4,0.3);
+    g6.connect(5,3,0.5);
+    Assertions.assertEquals(1.9,g7.shortestPathDist(1,3),0.00000001);
+}
 }

@@ -65,6 +65,11 @@ class WGraph_DSTest {
         Assertions.assertEquals(0,g4.getEdge(1,4));
         Assertions.assertEquals(2,g4.getEdge(5,3));
         Assertions.assertEquals(-1,g4.getEdge(8,3));
+        g4.addNode(12);
+        g4.addNode(13);
+        g4.connect(12,13,0.01);
+        Assertions.assertEquals(0.01,g4.getEdge(12,13));
+        Assertions.assertEquals(0.01,g4.getEdge(13,12));
     }
 
    @Test

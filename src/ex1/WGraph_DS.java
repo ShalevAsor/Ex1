@@ -14,8 +14,8 @@ public class WGraph_DS implements weighted_graph{
     and Evertex(the node destination), every edge have a weight.
      */
 
-    private static class Edge{
-        private double _weight;
+    private class Edge{
+        private double _weight=-1;
         private node_info Svertex;//represent the source vertex of the edge
         private node_info Dvertex;//represent the destination vertex of the edge
         //-----------constructor---------//
