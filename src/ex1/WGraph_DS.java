@@ -14,7 +14,7 @@ public class WGraph_DS implements weighted_graph{
     and Evertex(the node destination), every edge have a weight.
      */
 
-    private class Edge{
+    private static class Edge{
         private double _weight=-1;
         private node_info Svertex;//represent the source vertex of the edge
         private node_info Dvertex;//represent the destination vertex of the edge
@@ -152,6 +152,7 @@ public class WGraph_DS implements weighted_graph{
 
     @Override
     public double getEdge(int node1, int node2) {
+        if(node1==node2)return 0;
         if(this.hasEdge(node1,node2)) {//if there is an edge between node1 and node2
 
             node_info pointer1 = this.vertices.get(node1);

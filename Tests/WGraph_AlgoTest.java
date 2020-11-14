@@ -1,9 +1,10 @@
-import ex1.WGraph_Algo;
-import ex1.WGraph_DS;
-import ex1.weighted_graph;
-import ex1.weighted_graph_algorithms;
+import ex1.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 class WGraph_AlgoTest {
@@ -104,7 +105,7 @@ class WGraph_AlgoTest {
       tGraph.getGraph().removeEdge(149,150);
       Assertions.assertFalse(tGraph.isConnected());
   }
-@Test
+  @Test
     public void shortestPathDistTest(){
     weighted_graph g6=new WGraph_DS();
     weighted_graph_algorithms g7=new WGraph_Algo();
@@ -116,6 +117,7 @@ class WGraph_AlgoTest {
     g6.connect(1,3,8);
     g6.connect(2,3,2);
     Assertions.assertEquals(3,g7.shortestPathDist(1,3));
+      Assertions.assertEquals(3,g7.shortestPathDist(3,1));
     g6.addNode(4);
     g6.addNode(5);
     g6.connect(4,5,0.1);
@@ -123,5 +125,79 @@ class WGraph_AlgoTest {
     g6.connect(2,4,0.3);
     g6.connect(5,3,0.5);
     Assertions.assertEquals(1.9,g7.shortestPathDist(1,3),0.00000001);
+      Assertions.assertEquals(1.9,g7.shortestPathDist(3,1),0.00000001);
+    g6.removeEdge(1,2);
+    g6.removeEdge(1,3);
+    Assertions.assertEquals(-1,g7.shortestPathDist(1,3));
+    Assertions.assertEquals(-1,g7.shortestPathDist(1,18));
+      Assertions.assertEquals(-1,g7.shortestPathDist(18,1));
 }
+  @Test
+    public void shortestPathTest(){
+        weighted_graph_algorithms g8=this.graphCreator1();
+        g8.getGraph().connect(1,2,1);
+      g8.getGraph().connect(1,3,0.5);
+      g8.getGraph().connect(3,5,10);
+      g8.getGraph().connect(2,4,2);
+      g8.getGraph().connect(4,5,1);
+      List<node_info> myList=new LinkedList<>();
+      myList.add(0,g8.getGraph().getNode(1));
+      myList.add(1,g8.getGraph().getNode(2));
+      myList.add(2,g8.getGraph().getNode(4));
+      myList.add(3,g8.getGraph().getNode(5));
+     // List<node_info> list=g8.shortestPath(1,5);
+      Assertions.assertTrue(myList.equals(g8.shortestPath(1,5)));
+      weighted_graph g9=this.graphCreator2();
+      g9.connect(1,2,0.1);
+      g9.connect(2,3,0.2);
+      g9.connect(3,4,14);
+      g9.connect(4,5,2.5);
+      g9.connect(2,4,0.3);
+      g8.init(g9);
+      myList.clear();
+      myList.add(0,g9.getNode(1));
+      myList.add(1,g9.getNode(2));
+      myList.add(2,g9.getNode(4));
+      myList.add(3,g9.getNode(5));
+     /// System.out.println(g8.shortestPath(1,5).size());
+      Assertions.assertTrue(myList.equals(g8.shortestPath(1,5)));
+      g9.removeEdge(4,5);
+      Assertions.assertNull(g8.shortestPath(1,5));
+      weighted_graph g10=new WGraph_DS();
+      g10.addNode(1);
+      g10.addNode(2);
+      g8.init(g10);
+      Assertions.assertNull(g8.shortestPath(1,2));
+
+  }
+  @Test
+    public void comprehensiveTest(){
+        List<node_info> mylist=new LinkedList<>();
+        weighted_graph_algorithms graph=this.graphCreator1();
+        graph.getGraph().connect(1,2,1);
+        Assertions.assertEquals(1,graph.getGraph().edgeSize());
+        Assertions.assertEquals(6,graph.getGraph().getMC());
+        graph.getGraph().removeEdge(1,2);
+      Assertions.assertEquals(0,graph.getGraph().edgeSize());
+      Assertions.assertEquals(7,graph.getGraph().getMC());
+        graph.getGraph().connect(1,2,1);
+        graph.getGraph().connect(1,3,2);
+        Assertions.assertFalse(graph.isConnected());
+        Assertions.assertEquals(-1,graph.shortestPathDist(1,5));
+        Assertions.assertNull(graph.shortestPath(1,5));
+        graph.getGraph().connect(2,4,10.5);
+        graph.getGraph().connect(3,4,3);
+        Assertions.assertEquals(5,graph.shortestPathDist(1,4));
+        mylist.add(graph.getGraph().getNode(1));
+      mylist.add(graph.getGraph().getNode(3));
+      mylist.add(graph.getGraph().getNode(4));
+      Assertions.assertTrue(mylist.equals(graph.shortestPath(1,4)));
+      Assertions.assertFalse(graph.isConnected());
+      graph.getGraph().connect(4,5,2);
+      Assertions.assertTrue(graph.isConnected());
+      graph.getGraph().removeNode(4);
+      Assertions.assertEquals(0,graph.getGraph().getV(5).size());
+      Assertions.assertEquals(0,graph.getGraph().getEdge(1,1));
+
+  }
 }

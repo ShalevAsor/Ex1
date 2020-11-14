@@ -70,6 +70,7 @@ class WGraph_DSTest {
         g4.connect(12,13,0.01);
         Assertions.assertEquals(0.01,g4.getEdge(12,13));
         Assertions.assertEquals(0.01,g4.getEdge(13,12));
+        Assertions.assertEquals(0,g4.getEdge(1,1));
     }
 
    @Test
