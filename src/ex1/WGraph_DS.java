@@ -191,7 +191,7 @@ public class WGraph_DS implements weighted_graph{
     @Override
     public void connect(int node1, int node2, double w) {
         if (this.vertices.containsKey(node1) && this.vertices.containsKey(node2)) {//if this vertices is in the graph
-            if (!this.hasEdge(node1, node2)) {//and there is no edge between this vertices
+           // if (!this.hasEdge(node1, node2)) {//and there is no edge between this vertices
                 if (w >= 0 && node1 != node2) {//and node1 (key) and node2(key) is different(and the weight is un negative
                     node_info pointer1 = this.vertices.get(node1);//create pointer for the hashcode
                     node_info pointer2 = this.vertices.get(node2);//so it will be easier to access
@@ -199,7 +199,7 @@ public class WGraph_DS implements weighted_graph{
                     this.neighbors.get(node1).put(node2, pointer2);//add node2 to node1 neighbors
                     this.neighbors.get(node2).put(node1, pointer1);//add node1 to node2 neighbors
                     ModeCount++;
-                }
+              //  }
             }
         }
     }

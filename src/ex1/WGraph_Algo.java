@@ -189,10 +189,11 @@ public class WGraph_Algo implements weighted_graph_algorithms {
      * src--->node1---->node2----->...----->dest
      * @param src - start node
      * @param dest - end (target) node
-     * @return
+     * @return the list represent the shortest path if none then return null
      */
     @Override
     public List<node_info> shortestPath(int src, int dest) {
+        if(this.graph.getNode(src)==null||this.graph.getNode(dest)==null)return null;//if on of this nodes are not in the graph there is no path
         List<node_info> myList=new LinkedList<node_info>();//create list that will return with the shortest path
         //myList.add(0,this.graph.getNode(src));//add the src node to the first index of the list
        List<subNode> list= this.Dijkstras(this.graph.getNode(src),this.graph.getNode(dest));//pointer to the list that returned from Dijkstras algo

@@ -30,6 +30,10 @@ class WGraph_AlgoTest {
         }
         return graph;
     }
+    /*
+    At this test i will init g to g0 , i will remove node from g and make sure that the node removed
+    from g0.
+     */
     @Test
     public void initTest(){
         weighted_graph g=this.graphCreator2();
@@ -40,6 +44,10 @@ class WGraph_AlgoTest {
         Assertions.assertEquals(4,g0.getGraph().nodeSize());
 
     }
+    /*
+    At this test i will verify that the graph return from the method getGraph
+    it is the correct graph
+     */
     @Test
     public void getGraphTest(){
         weighted_graph_algorithms g1=this.graphCreator1();
@@ -47,9 +55,12 @@ class WGraph_AlgoTest {
         Assertions.assertEquals(0,g1.getGraph().edgeSize());
 
     }
-  @Test //at the first part of this test i will check if the graph was copied with all of his vertices and his neighbors
-  //at the second part i will test that it is a deep copy, i will remove an  vertex from the copy, and test if there is
-  // any change in the original graph.
+    /*
+    At the first part of this test i will check if the graph was copied with all of his vertices and his neighbors
+    at the second part i will test that it is a deep copy, i will remove an  vertex from the copy, and test if there is
+    any change in the original graph.
+     */
+  @Test
     public void copyTest(){
         weighted_graph_algorithms g2=this.graphCreator1();
         weighted_graph g3=g2.copy();
@@ -72,6 +83,9 @@ class WGraph_AlgoTest {
 
 
   }
+  /*
+  This test verify that g4 is connected or not with different cases
+   */
   @Test
     public void isConnectedTest(){
         weighted_graph g4=new WGraph_DS();
@@ -105,6 +119,9 @@ class WGraph_AlgoTest {
       tGraph.getGraph().removeEdge(149,150);
       Assertions.assertFalse(tGraph.isConnected());
   }
+  /*
+  Test for shortestPathDist, make sure this method return the correct distance in a different cases
+   */
   @Test
     public void shortestPathDistTest(){
     weighted_graph g6=new WGraph_DS();
@@ -116,22 +133,27 @@ class WGraph_AlgoTest {
     g6.connect(1,2,1);
     g6.connect(1,3,8);
     g6.connect(2,3,2);
-    Assertions.assertEquals(3,g7.shortestPathDist(1,3));
-      Assertions.assertEquals(3,g7.shortestPathDist(3,1));
+    Assertions.assertEquals(3,g7.shortestPathDist(1,3));//simple test the sortestPathDist:1-->2-->3(0+1+2=3)
+      Assertions.assertEquals(3,g7.shortestPathDist(3,1));//this should return the same dist
     g6.addNode(4);
     g6.addNode(5);
     g6.connect(4,5,0.1);
-    Assertions.assertEquals(3,g7.shortestPathDist(1,3));
+    Assertions.assertEquals(3,g7.shortestPathDist(1,3));//the shortest path between (1,3) is still 3
     g6.connect(2,4,0.3);
     g6.connect(5,3,0.5);
-    Assertions.assertEquals(1.9,g7.shortestPathDist(1,3),0.00000001);
-      Assertions.assertEquals(1.9,g7.shortestPathDist(3,1),0.00000001);
+    Assertions.assertEquals(1.9,g7.shortestPathDist(1,3),0.00000001);//shortest path is:1-->2-->4-->5-->3
+      Assertions.assertEquals(1.9,g7.shortestPathDist(3,1),0.00000001);//this should return the same dist
     g6.removeEdge(1,2);
     g6.removeEdge(1,3);
-    Assertions.assertEquals(-1,g7.shortestPathDist(1,3));
-    Assertions.assertEquals(-1,g7.shortestPathDist(1,18));
-      Assertions.assertEquals(-1,g7.shortestPathDist(18,1));
+    Assertions.assertEquals(-1,g7.shortestPathDist(1,3));//there is no path between (1,3)
+    Assertions.assertEquals(-1,g7.shortestPathDist(1,18));//18 is not in this graph
+      Assertions.assertEquals(-1,g7.shortestPathDist(18,1));//should return the same -1
+      Assertions.assertEquals(0,g7.shortestPathDist(1,1));//the shortestPathDist between (1,1) is 0
+
 }
+/*
+   Test for shortestPath, make sure this method return the correct list in a different cases
+ */
   @Test
     public void shortestPathTest(){
         weighted_graph_algorithms g8=this.graphCreator1();
@@ -146,7 +168,7 @@ class WGraph_AlgoTest {
       myList.add(2,g8.getGraph().getNode(4));
       myList.add(3,g8.getGraph().getNode(5));
      // List<node_info> list=g8.shortestPath(1,5);
-      Assertions.assertTrue(myList.equals(g8.shortestPath(1,5)));
+      Assertions.assertTrue(myList.equals(g8.shortestPath(1,5)));//the shortest path should be:1-->2-->4-->5
       weighted_graph g9=this.graphCreator2();
       g9.connect(1,2,0.1);
       g9.connect(2,3,0.2);
@@ -160,14 +182,18 @@ class WGraph_AlgoTest {
       myList.add(2,g9.getNode(4));
       myList.add(3,g9.getNode(5));
      /// System.out.println(g8.shortestPath(1,5).size());
-      Assertions.assertTrue(myList.equals(g8.shortestPath(1,5)));
+      Assertions.assertTrue(myList.equals(g8.shortestPath(1,5)));//the shortest path should be:1-->2-->4-->5
       g9.removeEdge(4,5);
-      Assertions.assertNull(g8.shortestPath(1,5));
+      Assertions.assertNull(g8.shortestPath(1,5));//should return null because there is no path between (1,5)
       weighted_graph g10=new WGraph_DS();
       g10.addNode(1);
       g10.addNode(2);
       g8.init(g10);
-      Assertions.assertNull(g8.shortestPath(1,2));
+      Assertions.assertNull(g8.shortestPath(1,2));//should return null because there is no path between (1,2)
+      Assertions.assertNull(g8.shortestPath(1,66));//node66 is not in the graph then this method should return null
+      myList.clear();
+      myList.add(0,g10.getNode(1));
+      Assertions.assertTrue(myList.equals(g8.shortestPath(1,1)));//the shortest path between (1,1) is: 1
 
   }
   @Test
