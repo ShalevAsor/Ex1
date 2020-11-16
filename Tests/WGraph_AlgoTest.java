@@ -196,6 +196,32 @@ class WGraph_AlgoTest {
       Assertions.assertTrue(myList.equals(g8.shortestPath(1,1)));//the shortest path between (1,1) is: 1
 
   }
+  /*
+  At this test i will create a simple weighted graph with five vertices and four edges, each node have one neighbors
+  node1 connecting to node2 and node2 connecting to node 3... until node5(node 5 not connecting to node1 at the first part
+  of this test) then i will save this graph (g11) and create a new graph(g12) and try to load to g12 the graph that g11 worked with
+  and then iam using equals that i made in WGraph_DS to verify that g12 equals to g11.
+  at the second part i will connect node5 to node1 and use equals again.
+   */
+  @Test
+  public void saveAndLoadTest(){
+      //part one
+      weighted_graph_algorithms g11=this.graphCreator1();
+      weighted_graph_algorithms g12=new WGraph_Algo();
+      int i=0,size=g11.getGraph().nodeSize();
+      g11.getGraph().connect(1,2,1);
+      g11.getGraph().connect(2,3,2);
+      g11.getGraph().connect(3,4,3);
+      g11.getGraph().connect(4,5,4);
+      Assertions.assertTrue(g11.save("myGraph"));
+      Assertions.assertTrue(g12.load("myGraph"));
+      Assertions.assertTrue(g11.getGraph().equals(g12.getGraph()));
+      //part two
+      g11.getGraph().connect(5,1,5);
+      Assertions.assertTrue(g11.save("myGraph"));
+      Assertions.assertTrue(g12.load("myGraph"));
+      Assertions.assertTrue(g11.getGraph().equals(g12.getGraph()));
+  }
   @Test
     public void comprehensiveTest(){
         List<node_info> mylist=new LinkedList<>();
@@ -224,6 +250,23 @@ class WGraph_AlgoTest {
       graph.getGraph().removeNode(4);
       Assertions.assertEquals(0,graph.getGraph().getV(5).size());
       Assertions.assertEquals(0,graph.getGraph().getEdge(1,1));
+
+  }
+  //@Test
+    public void milNodesTest(){
+      weighted_graph_algorithms milGraph=new WGraph_Algo();
+
+      int i=2,size=1000000;
+      milGraph.getGraph().addNode(1);
+      while(i<=size){
+          milGraph.getGraph().addNode(i);
+          milGraph.getGraph().connect(i-1,i,1);
+          i++;
+      }
+      System.out.println(milGraph.getGraph().edgeSize());
+      System.out.println(milGraph.getGraph().nodeSize());
+      Assertions.assertTrue(milGraph.isConnected());
+      Assertions.assertEquals(999999,milGraph.shortestPathDist(1,1000000));
 
   }
 }

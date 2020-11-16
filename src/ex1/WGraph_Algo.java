@@ -1,9 +1,10 @@
 package ex1;
 import ex1.WGraph_DS.*;
 
+import java.io.*;
 import java.util.*;
 
-public class WGraph_Algo implements weighted_graph_algorithms {
+public class WGraph_Algo implements weighted_graph_algorithms,java.io.Serializable {
     private weighted_graph graph = new WGraph_DS();
 
     //-------------------subNode class------------------//
@@ -220,12 +221,39 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 
     @Override
     public boolean save(String file) {
-        return false;
+        boolean saved=false;
+        try {
+            FileOutputStream myFile = new FileOutputStream(file);
+            ObjectOutputStream out=new ObjectOutputStream(myFile);
+            out.writeObject(this.graph);
+            out.close();
+            myFile.close();
+            return saved=true;
+        }
+        catch(IOException ex) {
+            System.out.println("ioException catch");
+            return saved;
+            }
     }
 
     @Override
     public boolean load(String file) {
-        return false;
+        boolean loaded=false;
+        try {
+            FileInputStream myFile = new FileInputStream(file);
+            ObjectInputStream input = new ObjectInputStream(myFile);
+            weighted_graph loadedGraph= (weighted_graph)input.readObject();
+
+            myFile.close();
+            input.close();
+            this.graph=loadedGraph;
+            loaded=true;
+            return loaded;
+        }
+        catch(IOException | ClassNotFoundException ex){
+            ex.printStackTrace();
+            return loaded;
+            }
     }
 
     //---------------BFS ALGO-------------//
@@ -326,13 +354,48 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 //            }
 //        }
 //        return solutionList;
+//    }                               lastvers 15/11
+//    public List<subNode> Dijkstras(node_info sNode, node_info dNode) {
+//
+//        List<subNode> solutionList = new LinkedList<subNode>();
+//        HashSet<Integer> visited =new HashSet<>();
+//        HashMap<Integer,subNode> nei=new HashMap<>();
+//        PriorityQueue<subNode> myPriorityqueue = new PriorityQueue<subNode>(new subNodeComperator());//this queue is gonna keep all the vertices in this graph
+//        //sNode.setTag(0);//set the tag of the src node to zero (the distance from node to himself is zero)
+//        myPriorityqueue.add(new subNode(0, sNode.getKey(), sNode.getKey(),"white"));//add the src subNode to the queue
+//        //solutionSet.add(sNode);
+//        while (!myPriorityqueue.isEmpty()) {//as long as this queue isnt empty(thats meant there is still vertices in the graph thats hasnt visited)
+//            subNode subNodePointer = myPriorityqueue.poll();
+//            if (subNodePointer.getCurrentKey() == dNode.getKey()) {
+//                solutionList.add(subNodePointer);
+//                return solutionList;
+//            }
+//            if (!visited.contains(subNodePointer._currentKey)) {
+//                visited.add(subNodePointer._currentKey);
+//                solutionList.add(subNodePointer);
+//                Iterator<node_info> it = this.graph.getV(subNodePointer.getCurrentKey()).iterator();
+//                while (it.hasNext()) {
+//                    node_info neiPointer = it.next();
+//                    if (!visited.contains(neiPointer.getKey())) {
+//                        //if (neiPointer.getKey() != subNodePointer._parent) {
+//                        subNode subNodeNeiPointer=new subNode(subNodePointer._currentKey,neiPointer.getKey());
+//                        double weight = (this.graph.getEdge(subNodePointer._currentKey, neiPointer.getKey()))+subNodePointer._weight;
+//                        if (weight<subNodeNeiPointer._weight){
+//                            subNodeNeiPointer.setWeight(weight);
+//                            myPriorityqueue.add(subNodeNeiPointer);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return solutionList;
 //    }
     public List<subNode> Dijkstras(node_info sNode, node_info dNode) {
 
         List<subNode> solutionList = new LinkedList<subNode>();
         HashSet<Integer> visited =new HashSet<>();
         HashMap<Integer,subNode> nei=new HashMap<>();
-        PriorityQueue<subNode> myPriorityqueue = new PriorityQueue<subNode>(new subNodeComperator());//this queue is gonna keep all the vertices in this graph
+        PriorityQueue<subNode> myPriorityqueue = new PriorityQueue<subNode>();//this queue is gonna keep all the vertices in this graph
         //sNode.setTag(0);//set the tag of the src node to zero (the distance from node to himself is zero)
         myPriorityqueue.add(new subNode(0, sNode.getKey(), sNode.getKey(),"white"));//add the src subNode to the queue
         //solutionSet.add(sNode);
@@ -362,159 +425,6 @@ public class WGraph_Algo implements weighted_graph_algorithms {
         }
         return solutionList;
     }
-//    public List<subNode> Dijkstras(node_info sNode, node_info dNode) {
-//        double weight=-1;
-//        List<subNode> solutionList = new LinkedList<subNode>();//at this list will be all the weights of the subNode's
-//        PriorityQueue<subNode> myPriorityqueue = new PriorityQueue<subNode>(new subNodeComperator());//this queue is gonna keep all the vertices in this graph
-//        myPriorityqueue.add(new subNode(0, sNode.getKey(), sNode.getKey()));//add the src subNode to the queue
-//        while (!myPriorityqueue.isEmpty()) {//as long as this queue is not empty(that is mean there is still vertices in the graph that is not visited)
-//            subNode pointer = myPriorityqueue.poll();//pointer to the subNode that removed from the queue
-//            if (pointer.getCurrentKey() == dNode.getKey()) {//if this is the dest node so the shortest path was found
-//                solutionList.add(pointer);//add the subNode to the solution list and break
-//                break;
-//            }
-//            //  if (pointer.getVisited() == false) {
-//            pointer.setVisited(true);//mark this subNode as visited
-//            solutionList.add(pointer);
-//            Iterator<node_info> it = this.graph.getV(pointer.getCurrentKey()).iterator();//creating iterator to get all the pointer neighbors
-//            while (it.hasNext()) {//as long as the pointer have neighbors
-//                node_info pointer2 = it.next();//create pointer to the first neighbor
-//                if (pointer2.getKey() != pointer._parent) {//because pointer already visited
-//                    int parentKey = pointer.getCurrentKey();//pointer is the "parent" of pointer2
-//                    weight = ((this.graph.getEdge(parentKey, pointer2.getKey())) + (pointer._weight));//the sum of the path to pointer2
-//                    myPriorityqueue.add(new subNode(weight, parentKey, pointer2.getKey()));//add the new subNode to the queue
-//                } //}
-//            }
-//        }
-//        return solutionList;
-//    }
-//    public List<subNode> Dijkstras(node_info sNode, node_info dNode) {
-//        int subNodesCounter=0;
-//        if(!this.graph.getV().contains(sNode)||!this.graph.getV().contains(dNode)){return null;}//if one of this vertices isnt in the graph there is no path
-//        //HashMap<subNode,subNode> visited=new HashMap<subNode,subNode >();
-//        List<subNode> solutionList = new LinkedList<subNode>();//at this list will be all the weights of the subNode's
-//        PriorityQueue<subNode> myPriorityqueue = new PriorityQueue<subNode>(new subNodeComperator());//this queue is gonna keep all the vertices in this graph
-//        myPriorityqueue.add(new subNode(0,sNode.getKey(),"white"));//add the src subNode to the queue-white mean  !visited
-//        myPriorityqueue.peek().setParent( myPriorityqueue.peek());
-//        subNodesCounter++;
-//        while (!myPriorityqueue.isEmpty()) {//as long as this queue is not empty(that is mean there is still vertices in the graph that is not visited)
-//            subNode subNodePointer = myPriorityqueue.poll();//pointer to the subNode that removed from the queue
-//            if (subNodePointer.getCurrentKey() == dNode.getKey()) {//if this is the dest node so the shortest path was found
-//                solutionList.add(subNodePointer);//add the subNode to the solution list and break
-//                return solutionList;
-//            }
-//           if (subNodePointer.tag=="white") {//if this subNode isnt visited
-//             subNodePointer.setTag("black");// mark him as visited (black)
-//            solutionList.add(subNodePointer);
-//               subNodesCounter++;
-////               if(subNodesCounter>this.graph.edgeSize()+1){
-////                   return null;
-////               }
-//            Iterator<node_info> it = this.graph.getV(subNodePointer.getCurrentKey()).iterator();//creating iterator to get all this pointer neighbors
-//            while (it.hasNext()) {//as long as the pointer has neighbors
-//                node_info nodeInfoPointer = it.next();//create pointer to the first neighbor
-//                if (nodeInfoPointer.getKey() != subNodePointer.getParent().getCurrentKey()) {//because pointer already visited
-//                    int parentKey = subNodePointer.getCurrentKey();//pointer is the "parent" of pointer2
-//                    double weight = ((this.graph.getEdge(parentKey, nodeInfoPointer.getKey())) + (subNodePointer._weight));//the sum of the path to pointer2
-//                    if(weight<subNodePointer.getParent()._weight){
-//                    subNode sonode=new subNode(weight,subNodePointer, nodeInfoPointer.getKey(),"white");
-//                    if(sonode.getParent().tag=="black"){
-//                    myPriorityqueue.add(sonode);//add the new subNode to the queue
-//                }}}
-//            }
-//           }
-//        }
-//        return solutionList;
-//    }
-//    public List<subNode> Dijkstras(node_info sNode, node_info dNode) {
-//        int minWeightKey = 0;
-//        double minWeight = Double.POSITIVE_INFINITY;
-//        if (!this.graph.getV().contains(sNode) || !this.graph.getV().contains(dNode)) {
-//            return null;
-//        }//if one of this vertices isnt in the graph there is no path
-//        //HashMap<subNode,subNode> visited=new HashMap<subNode,subNode >();
-//
-//        HashSet<node_info> visited = new HashSet<>();
-//        List<subNode> solutionList = new LinkedList<subNode>();//at this list will be all the weights of the subNode's
-//        PriorityQueue<subNode> myPriorityqueue = new PriorityQueue<subNode>(new subNodeComperator());//this queue is gonna keep all the vertices in this graph
-//        myPriorityqueue.add(new subNode(0, sNode.getKey(), "white"));//add the src subNode to the queue-white mean  !visited
-//        myPriorityqueue.peek().setParent(myPriorityqueue.peek());
-//        while (!myPriorityqueue.isEmpty()) {
-//            subNode subNodePointer = myPriorityqueue.poll();
-//            if (!visited.contains(subNodePointer)) {
-//                // if(subNodePointer.tag=="white"){//if this subNode is not visited
-//                //   subNodePointer.setTag("black");//black=visited
-//                visited.add(this.graph.getNode(subNodePointer._currentKey));
-//                if (subNodePointer._currentKey == dNode.getKey()) {
-//                    solutionList.add(subNodePointer);
-//                    return solutionList;
-//                } else {
-//                    Iterator<node_info> it1 = this.graph.getV(subNodePointer._currentKey).iterator();
-//                    while (it1.hasNext()) {
-//                        node_info nodeNeiPointer = it1.next();
-//                        if (!visited.contains(nodeNeiPointer)) {
-//                            int parentKey = subNodePointer.getCurrentKey();//pointer is the "parent" of pointer2
-//                            double weight1 = this.graph.getEdge(parentKey, nodeNeiPointer.getKey()) + subNodePointer._weight;
-//                            if (weight1 < minWeight) {
-//                                minWeight = weight1;
-//                                minWeightKey = nodeNeiPointer.getKey();
-//                            }
-//
-//                        }
-//                    }
-//                    subNode sonode = new subNode(minWeight, subNodePointer, minWeightKey, "white");
-//                    myPriorityqueue.add(sonode);
-//                    solutionList.add(sonode);
-//                    visited.add(this.graph.getNode(sonode._currentKey));
-//                }
-//            }
-//        }
-//            return solutionList;
-//        }
-                      //--last test
-//    public List<subNode> Dijkstras(node_info sNode, node_info dNode) {
-//        ArrayList<Double> weightlist = new ArrayList<>();
-//        int curKey = 0;
-//        double minWight = Double.POSITIVE_INFINITY;
-//        double weight = 0;
-//        if (!this.graph.getV().contains(sNode) || !this.graph.getV().contains(dNode)) {
-//            return null;
-//        }//if one of this vertices isnt in the graph there is no path
-//        //HashMap<Integer,node_info> visited=new HashMap<Integer, node_info>();
-//        HashSet<node_info> visited = new HashSet<>();
-//        List<subNode> solutionList = new LinkedList<subNode>();//at this list will be all the weights of the subNode's
-//        PriorityQueue<subNode> myPriorityqueue = new PriorityQueue<subNode>(new subNodeComperator());//this queue is gonna keep all the vertices in this graph
-//        myPriorityqueue.add(new subNode(0, sNode.getKey(), "white"));//add the src subNode to the queue-white mean  !visited
-//        myPriorityqueue.peek().setParent(myPriorityqueue.peek());
-//        while (!myPriorityqueue.isEmpty()) {//as long as this queue is not empty(that is mean there is still vertices in the graph that is not visited)
-//            subNode subNodePointer = myPriorityqueue.poll();//pointer to the subNode that removed from the queue
-//            if (!visited.contains(subNodePointer)) {
-//                visited.add(this.graph.getNode(subNodePointer._currentKey));
-//                solutionList.add(subNodePointer);
-//                if (subNodePointer.getCurrentKey() == dNode.getKey()) {//if this is the dest node so the shortest path was found
-//                    solutionList.add(subNodePointer);//add the subNode to the solution list and break
-//                    return solutionList;
-//                }
-//                Iterator<node_info> it = this.graph.getV(subNodePointer._currentKey).iterator();
-//
-//                while (it.hasNext()) {
-//                    node_info neiPointer = it.next();
-//
-//                    if (!visited.contains(neiPointer.getKey())) {
-//                        weight = this.graph.getEdge(subNodePointer._currentKey, neiPointer.getKey());
-//                        if (weight < subNodePointer._weight) {
-//                            weight += (subNodePointer._weight);
-//                        }
-//                        int parentKey = subNodePointer.getCurrentKey();//pointer is the "parent" of pointer2
-//                        subNode sonode = new subNode(weight, subNodePointer, neiPointer.getKey(), "white");
-//                        myPriorityqueue.add(sonode);//add the new subNode to the queue
-//                    }
-//                }
-//            }
-//        }
-//
-//        return solutionList;
-//    }
 
     public subNode getSubNode(List<subNode> list,int key) {
         int i = 0, size = list.size();
@@ -535,5 +445,6 @@ public class WGraph_Algo implements weighted_graph_algorithms {
         }
         return reversed;
     }
+
 
 }

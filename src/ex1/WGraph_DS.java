@@ -3,7 +3,7 @@ package ex1;
 import java.util.*;
 
 
-public class WGraph_DS implements weighted_graph{
+public class WGraph_DS implements weighted_graph,java.io.Serializable{
     private HashMap<Integer,node_info> vertices=new HashMap<Integer,node_info>();
     private HashMap<Integer,Edge> edges=new HashMap<Integer, Edge>();
     private HashMap<Integer,HashMap<Integer,node_info>> neighbors=new HashMap<Integer,HashMap<Integer,node_info>>();
@@ -14,7 +14,7 @@ public class WGraph_DS implements weighted_graph{
     and Evertex(the node destination), every edge have a weight.
      */
 
-    private static class Edge{
+    private static class Edge implements java.io.Serializable{
         private double _weight=-1;
         private node_info Svertex;//represent the source vertex of the edge
         private node_info Dvertex;//represent the destination vertex of the edge
@@ -36,7 +36,7 @@ public class WGraph_DS implements weighted_graph{
     }
 
     //-------------------NodeInfo-----------------//
-    private static class NodeInfo implements node_info{
+    private static class NodeInfo implements node_info,java.io.Serializable{
         private int _key=0;
         private String _info="white";
         private double _tag;// the tag represent the edge weight
@@ -137,9 +137,9 @@ public class WGraph_DS implements weighted_graph{
 //        int hcode1=this.hashCode(pointer1,pointer2);
 //        int hcode2=this.hashCode(pointer2,pointer1);
 //        if((this.edges.containsKey(hcode1))){
-//            if(this.edges.get(hcode1)._weight!=0)return ans=true;}
+//            return ans=true;}
 //        if(this.edges.containsKey(hcode2)){
-//            if(this.edges.get(hcode2)._weight!=0)return ans=true;}
+//            return ans=true;}
         return ans;
     }
 
@@ -323,8 +323,34 @@ public class WGraph_DS implements weighted_graph{
                 Objects.equals(this.vertices.get(node_key).getInfo(), nodeInfo._info);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WGraph_DS)) return false;
+        WGraph_DS wGraph_ds = (WGraph_DS) o;
+        if(this.ModeCount!=((WGraph_DS) o).ModeCount||this.nodeSize()!=((WGraph_DS) o).nodeSize()||this.edgeSize()!=((WGraph_DS) o).edgeSize())return false;
+        for (node_info n : this.vertices.values()) {
+            if (!((WGraph_DS) o).vertices.containsKey(n.getKey())) return false;
+        }
+        for (Edge e : this.edges.values()) {
+            if (!((WGraph_DS) o).edges.containsKey(this.hashCode(e.Svertex, e.Dvertex))) return false;
+        }
+//        for (HashMap<Integer, node_info> nei : this.neighbors.values()) {
+//            if (!((WGraph_DS) o).neighbors.containsValue(nei.values())) return false;
+//        }
+        Iterator<node_info> it1=this.getV().iterator();
+        //Iterator<node_info> it0=this.getV().iterator();
+        while(it1.hasNext()) {
+            node_info pointer = it1.next();
+            Iterator<node_info> it2 = this.getV(pointer.getKey()).iterator();
+            while (it2.hasNext()) {
+                if (!((WGraph_DS) o).neighbors.get(pointer.getKey()).containsKey(it2.next().getKey())) return false;
+            }
+        }
+        return true;
+    }
     public int hashCode(node_info n1, node_info n2) {
-        return Objects.hash(n1, n2);
+        return Objects.hash(n1.getKey(), n2.getKey());
     }
 
 }
