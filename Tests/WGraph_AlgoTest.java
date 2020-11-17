@@ -1,12 +1,12 @@
 import ex1.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+
 class WGraph_AlgoTest {
 
 
@@ -243,30 +243,20 @@ class WGraph_AlgoTest {
         mylist.add(graph.getGraph().getNode(1));
       mylist.add(graph.getGraph().getNode(3));
       mylist.add(graph.getGraph().getNode(4));
-      Assertions.assertTrue(mylist.equals(graph.shortestPath(1,4)));
+      assertEquals(graph.shortestPath(1, 4), mylist);
       Assertions.assertFalse(graph.isConnected());
       graph.getGraph().connect(4,5,2);
       Assertions.assertTrue(graph.isConnected());
       graph.getGraph().removeNode(4);
       Assertions.assertEquals(0,graph.getGraph().getV(5).size());
-      Assertions.assertEquals(0,graph.getGraph().getEdge(1,1));
+      Assertions.assertNull(graph.getGraph().getNode(1992));
+      weighted_graph g20 = new WGraph_DS();
+      g20.addNode(2);
+      Assertions.assertEquals(-1,g20.getEdge(1,1));
+      g20.addNode(1);
+      g20.connect(1,1,0);
+      Assertions.assertEquals(-1,g20.getEdge(1,1));
 
-  }
-  //@Test
-    public void milNodesTest(){
-      weighted_graph_algorithms milGraph=new WGraph_Algo();
-
-      int i=2,size=1000000;
-      milGraph.getGraph().addNode(1);
-      while(i<=size){
-          milGraph.getGraph().addNode(i);
-          milGraph.getGraph().connect(i-1,i,1);
-          i++;
-      }
-      System.out.println(milGraph.getGraph().edgeSize());
-      System.out.println(milGraph.getGraph().nodeSize());
-      Assertions.assertTrue(milGraph.isConnected());
-      Assertions.assertEquals(999999,milGraph.shortestPathDist(1,1000000));
 
   }
 }

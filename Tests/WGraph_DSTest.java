@@ -5,9 +5,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ex1.WGraph_DS;
 import java.util.Iterator;
+import java.util.Random;
+
+/**
+ * This is a test class for WGraph_DS, each method has a separate test.
+ */
 
 class WGraph_DSTest {
-
+    private static Random _rnd = null;
     public weighted_graph graphCreator() {
         weighted_graph graph = new WGraph_DS();
         int i = 1, size = 5;
@@ -17,7 +22,7 @@ class WGraph_DSTest {
         }
         return graph;
     }
-    /*
+    /**
      This test verify getNode and addNode are working
      */
     @Test
@@ -32,7 +37,7 @@ class WGraph_DSTest {
         Assertions.assertEquals(6,g1.nodeSize());//there is 6 vertices in this graph
 
     }
-    /*
+    /**
     At this test i will verify that the connect is not connecting node that is not in this graph
     and connect (2,1) (for example) is equal to connect (1,2) .
      */
@@ -51,7 +56,7 @@ class WGraph_DSTest {
         g2.connect(1,2,2.6);//change the weight of the edge from 2.5 to 2.6
         Assertions.assertEquals(2.6,g2.getEdge(1,2));//the weight should be 2.6
     }
-    /*
+    /**
     At this test i will verify that the method haseEdge return the correct boolean condition
      */
     @Test
@@ -68,8 +73,9 @@ class WGraph_DSTest {
         Assertions.assertFalse(g3.hasEdge(1,8));//8 is not in this graph
 
     }
-    /*
+    /**
     At this test i will verify that the weight of the edge returned have the correct weight
+    and if there is no edge it should return -1
      */
     @Test
     public void getEdgeTest(){
@@ -95,9 +101,9 @@ class WGraph_DSTest {
         g4.connect(12,13,0.01);
         Assertions.assertEquals(0.01,g4.getEdge(12,13));
         Assertions.assertEquals(0.01,g4.getEdge(13,12));
-        Assertions.assertEquals(0,g4.getEdge(1,1));//the weight of the edge from node1 to node1 is 0
+        Assertions.assertEquals(-1,g4.getEdge(1,1));//the weight of the edge from node1 to node1 is -1
     }
-    /*
+    /**
     This test verify that getV return all the vertices in this graph
      */
     @Test
@@ -110,8 +116,8 @@ class WGraph_DSTest {
             Assertions.assertTrue(g5.equals(pointer.getKey(),pointer));//verify every vertex in this graph equal to getV vertex
         }
     }
-    /*
-    At this test i will compare each of node1 neighbors to the getV Collection
+    /**
+    At this test i will compare each of node1 neighbors to the getV returned Collection
      */
     @Test
     public void getVTest2(){
@@ -134,8 +140,8 @@ class WGraph_DSTest {
         Assertions.assertTrue(g6.equals(3,pointer));
 
     }
-    /*
-    Test that every node was removed
+    /**
+    At this test i will verify that every node was removed.
      */
     @Test
     public void removeNodeTest(){
@@ -160,9 +166,10 @@ class WGraph_DSTest {
         Assertions.assertEquals(0,g7.edgeSize());//there is no edge in this graph (after 3,4 removed)
         g7.connect(2,2,1);
         Assertions.assertEquals(0,g7.edgeSize());
+       Assertions.assertNull( g7.removeNode(22));// there is no node with this key in the graph so removeNode should return null
     }
-    /*
-    At this test i will verify that the method removeEdge is removing the correct edge and more.
+    /**
+    At this test i will verify that the method removeEdge is removing the correct edge.
      */
     @Test
     public void removeEdgeTest(){
@@ -203,6 +210,8 @@ class WGraph_DSTest {
         g9.connect(1,2,1);
         g9.connect(1,3,1);
         g9.connect(1,4,1);
+        g9.connect(4,1,2);
+        g9.connect(4,4,2);
         Assertions.assertEquals(3,g9.edgeSize());//g9 have 3 edges (node1 have 3 neighbors)
         g9.connect(1,2,5);
         Assertions.assertEquals(3,g9.edgeSize());//the weight of the edge between node1 and node2 has changed but there is still 3 edges
@@ -230,6 +239,33 @@ class WGraph_DSTest {
         Assertions.assertEquals(10,g10.getMC());//after node2 was connected to node4 and node 5 the MC should be 10
         g10.removeNode(2);
         Assertions.assertEquals(15,g10.getMC());//node 2 have 4 neighbors so the MC should be 10+4 and +1 to remove node2
+
+
+    }
+   // @Test
+    void milTest(){
+        int i=1,size=1000000;
+        weighted_graph g=new WGraph_DS();
+        g.addNode(0);
+        while(i<size){
+            g.addNode(i);
+            g.connect(i,i-1,1);
+            if(i>12){
+                g.connect(i,i-5,1);
+                g.connect(i,i-6,1);
+                g.connect(i,i-7,1);
+                g.connect(i,i-8,1);
+                g.connect(i,i-9,1);
+                g.connect(i,i-4,1);
+                g.connect(i,i-3,1);
+                g.connect(i,i-2,1);
+                g.connect(i,i-10,1);
+                g.connect(i,i-11,1);
+            }
+            i++;
+        }
+        System.out.println(g.nodeSize());
+        System.out.println(g.edgeSize());
 
 
     }

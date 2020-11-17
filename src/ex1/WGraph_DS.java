@@ -2,6 +2,12 @@ package ex1;
 
 import java.util.*;
 
+/**
+ * This class implements weighted_graph and supports basic methods like addNode, removeNode , addEdge
+ * and more, each method in this class attached with detailed explanations about how it works and Complexity.
+ * the data structure of the vertices and edges is HashMap, the neighbors represented with HashMap ass well
+ * but there is neighbors HashMap for each vertex in this graph and all those HashMap contained in another HashMap
+ */
 
 public class WGraph_DS implements weighted_graph,java.io.Serializable{
     private HashMap<Integer,node_info> vertices=new HashMap<Integer,node_info>();
@@ -9,54 +15,40 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
     private HashMap<Integer,HashMap<Integer,node_info>> neighbors=new HashMap<Integer,HashMap<Integer,node_info>>();
     private int ModeCount=0;
 
-    /*
-    This private class represent an edge in the graph . every edge have a Svertex(the node thats the edge is start from)
+    /**
+    This private static class represent an edge in the graph . every edge have a Svertex(the node thats the edge is start from)
     and Evertex(the node destination), every edge have a weight.
      */
+             //-----------Edge---------------//
 
     private static class Edge implements java.io.Serializable{
         private double _weight=-1;
         private node_info Svertex;//represent the source vertex of the edge
         private node_info Dvertex;//represent the destination vertex of the edge
-        //-----------constructor---------//
-        public Edge(){//empty constructor
-            this._weight=0;
-        }
 
+
+
+        //-----------constructor---------//
         public Edge(node_info start,node_info dis,double weight){
             this._weight=weight;
             this.Dvertex=dis;
             this.Svertex=start;
         }
-
-        public double getW(){
-            return this._weight;
+        public void setWeight(double w){
+            this._weight=w;
         }
-
     }
-
     //-------------------NodeInfo-----------------//
     private static class NodeInfo implements node_info,java.io.Serializable{
-        private int _key=0;
+        private int _key;
         private String _info="white";
         private double _tag;// the tag represent the edge weight
         private static int id = 1;
 
-        //--------constructors---------//
-        //empty constructor
-        public NodeInfo() {  //empty constructor- the first vertex key will be 1
-            this._key = id++;
-        }
+        //--------constructor---------//
         //insert only key
         public NodeInfo(int key){
             this._key=key;
-        }
-
-        //copy constructor
-        public NodeInfo(node_info n){
-            this._key=n.getKey();
-            this._tag=n.getTag();
-            this._info=n.getInfo();
         }
 
         /**
@@ -105,15 +97,17 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
         }
 
     }
-    //--------------------WGraph_DS-------------------------------------//
+    //--------------------WGraph_DS--------------------------//
     //--------constructor-----------//
     public WGraph_DS(){
     }
 
     /**
-     * This method return the node_info by the given key
+     * This method return the node_info by the given key, if this graph is not contains this key
+     * return null
+     * runtime- O(1)
      * @param key - the node_id
-     * @return node_info
+     * @return node_info else null
      */
     @Override
     public node_info getNode(int key) {
@@ -122,6 +116,8 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
 
     /**
      * This method return true iff there is an edge between node1 and node2
+     * else return false.
+     * runtime - O(1)
      * @param node1
      * @param node2
      * @return true if this nodes is connected, else return false
@@ -131,20 +127,14 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
     public boolean hasEdge(int node1, int node2) {
         boolean ans=false;
         if(!this.vertices.containsKey(node1)||!this.vertices.containsKey(node2))return ans;//if the vertices isnt in the graph the ans is false
-        if(this.neighbors.get(node1).containsKey(node2))return ans=true;//check if node2 in the node1 neighbors
-//        node_info pointer1=this.vertices.get(node1);
-//        node_info pointer2=this.vertices.get(node2);
-//        int hcode1=this.hashCode(pointer1,pointer2);
-//        int hcode2=this.hashCode(pointer2,pointer1);
-//        if((this.edges.containsKey(hcode1))){
-//            return ans=true;}
-//        if(this.edges.containsKey(hcode2)){
-//            return ans=true;}
+        if(this.neighbors.get(node1).containsKey(node2))ans=true;//check if node2 in the node1 neighbors
         return ans;
     }
 
     /**
      * This method return the weight of the edge between node1 and node2
+     * The edge key is hashcode of node1 and node2
+     * runtime-O(1)
      * @param node1
      * @param node2
      * @return weight,if the nodes are disconnected return -1
@@ -152,11 +142,9 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
 
     @Override
     public double getEdge(int node1, int node2) {
-        if(node1==node2)return 0;
         if(this.hasEdge(node1,node2)) {//if there is an edge between node1 and node2
-
-            node_info pointer1 = this.vertices.get(node1);
-            node_info pointer2 = this.vertices.get(node2);
+            node_info pointer1 = this.vertices.get(node1);//pointer to node1
+            node_info pointer2 = this.vertices.get(node2);//pointer to node2
             int hcode1 = this.hashCode(pointer1, pointer2);
             int hcode2 = this.hashCode(pointer2, pointer1);
             if (this.edges.containsKey(hcode1)) {
@@ -169,7 +157,8 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
     }
 
     /**
-     * This method add a new node into this weighted graph .
+     * This method add a new node into this weighted graph.
+     * runtime-O(1)
      * @param key
      */
     @Override
@@ -183,7 +172,9 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
 
     /**
      * This method connecting node1 and node2 with an edge.
+     * if node1 and node2 has edge then the new weight will be update.
      * the edge weight will be w.
+     * runtime-O(1)
      * @param node1
      * @param node2
      * @param w
@@ -193,28 +184,32 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
         if (this.vertices.containsKey(node1) && this.vertices.containsKey(node2)) {//if this vertices is in the graph
            // if (!this.hasEdge(node1, node2)) {//and there is no edge between this vertices
                 if (w >= 0 && node1 != node2) {//and node1 (key) and node2(key) is different(and the weight is un negative
+                   if(this.hasEdge(node1,node2)){
+                       this.getTheEdge(node1,node2).setWeight(w);
+                        ModeCount++;
+                   }
+                   else{
                     node_info pointer1 = this.vertices.get(node1);//create pointer for the hashcode
                     node_info pointer2 = this.vertices.get(node2);//so it will be easier to access
                     this.edges.put(this.hashCode(pointer1, pointer2), new Edge(pointer1, pointer2, w));//add them to edges
                     this.neighbors.get(node1).put(node2, pointer2);//add node2 to node1 neighbors
                     this.neighbors.get(node2).put(node1, pointer1);//add node1 to node2 neighbors
-                    ModeCount++;
-              //  }
+                    ModeCount++;}
             }
         }
     }
-
     /**
      * This method return a Collection of all the vertices in this weighted graph
+     * runtime-O(1)
      * @return vertices Collection
      */
     @Override
     public Collection<node_info> getV() {
         return this.vertices.values();
     }
-
     /**
      * This method return a Collection of all this node_id neighbors
+     * runtime-O(1)
      * @param node_id
      * @return neighbors Collection
      */
@@ -231,6 +226,7 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
 
     /**
      * This method remove the node with the given key from this weighted graph and from his neighbors
+     * Complexity-if V is the sum of this node neighbors than O(v)
      * @param key
      * @return the node_info
      */
@@ -250,18 +246,19 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
             ModeCount++;//increase the ModeCount again for removing this node from the graph
             return this.vertices.remove(key);
         }
-        return null;//if this node isnt in the graph return null
+        return null;//if this node is not in the graph return null
     }
 
     /**
-     * This method remove node1 and node2 edge
+     * This method removes the edge between node1 and node2.
+     *
+     * Complexity-O(1)
      * @param node1
      * @param node2
      */
     @Override
     public void removeEdge(int node1, int node2) {
-        if(this.hasEdge(node1,node2)){
-        if(node1!=node2){//if this isnt the same vertex
+       if(node1!=node2){//if this is not the same vertex
             /*
             note:i dont need to make sure that there is an edge between this
              vertices because if there is node edge between them nothing will happen
@@ -272,11 +269,11 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
             this.neighbors.get(node2).remove(node1);
             ModeCount++;
         }
-
-    }}
+   }
 
     /**
      * This method return the number of the vertices in this weighted graph
+     * Complexity-O(1)
      * @return number of vertices
      */
     @Override
@@ -286,6 +283,7 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
 
     /**
      * This method return the number of edges in this weighted graph
+     * Complexity-O(1)
      * @return number of edges
      */
     @Override
@@ -295,6 +293,7 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
 
     /**
      * This method return the Mode Count
+     *Complexity-O(1)
      * @return
      */
     @Override
@@ -314,6 +313,12 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
         return this.vertices;
     }
 
+    /**
+     * node_info equals,generate by java , i did a few changes
+     * @param node_key
+     * @param o
+     * @return true if node1 equal to o
+     */
     public boolean equals(int node_key, Object o) {
         if (this == o) return true;
         if (!(o instanceof NodeInfo)) return false;
@@ -323,6 +328,11 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
                 Objects.equals(this.vertices.get(node_key).getInfo(), nodeInfo._info);
     }
 
+    /**
+     * this method compare two weighted graphs.
+     * @param o
+     * @return true if this graph is equal to o
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -335,11 +345,7 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
         for (Edge e : this.edges.values()) {
             if (!((WGraph_DS) o).edges.containsKey(this.hashCode(e.Svertex, e.Dvertex))) return false;
         }
-//        for (HashMap<Integer, node_info> nei : this.neighbors.values()) {
-//            if (!((WGraph_DS) o).neighbors.containsValue(nei.values())) return false;
-//        }
         Iterator<node_info> it1=this.getV().iterator();
-        //Iterator<node_info> it0=this.getV().iterator();
         while(it1.hasNext()) {
             node_info pointer = it1.next();
             Iterator<node_info> it2 = this.getV(pointer.getKey()).iterator();
@@ -349,8 +355,27 @@ public class WGraph_DS implements weighted_graph,java.io.Serializable{
         }
         return true;
     }
+
+    /**
+     * hashcode of two Integers , node1 key and node2 key
+     * @param n1
+     * @param n2
+     * @return hashcode of two keys
+     */
     public int hashCode(node_info n1, node_info n2) {
         return Objects.hash(n1.getKey(), n2.getKey());
+    }
+    public Edge getTheEdge(int node1,int node2){
+        node_info pointer1 = this.vertices.get(node1);//pointer to node1
+        node_info pointer2 = this.vertices.get(node2);//pointer to node2
+        int hcode1 = this.hashCode(pointer1, pointer2);
+        int hcode2 = this.hashCode(pointer2, pointer1);
+        if (this.edges.containsKey(hcode1)) {
+            return this.edges.get(hcode1);
+        } else {
+            return this.edges.get(hcode2);
+        }
+
     }
 
 }
