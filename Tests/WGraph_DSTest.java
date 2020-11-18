@@ -101,7 +101,7 @@ class WGraph_DSTest {
         g4.connect(12,13,0.01);
         Assertions.assertEquals(0.01,g4.getEdge(12,13));
         Assertions.assertEquals(0.01,g4.getEdge(13,12));
-        Assertions.assertEquals(-1,g4.getEdge(1,1));//the weight of the edge from node1 to node1 is -1
+        Assertions.assertEquals(0,g4.getEdge(1,1));//the weight of the edge from node1 to node1 is 0
     }
     /**
     This test verify that getV return all the vertices in this graph
@@ -242,32 +242,4 @@ class WGraph_DSTest {
 
 
     }
-   // @Test
-    void milTest(){
-        int i=1,size=1000000;
-        weighted_graph g=new WGraph_DS();
-        g.addNode(0);
-        while(i<size){
-            g.addNode(i);
-            g.connect(i,i-1,1);
-            if(i>12){
-                g.connect(i,i-5,1);
-                g.connect(i,i-6,1);
-                g.connect(i,i-7,1);
-                g.connect(i,i-8,1);
-                g.connect(i,i-9,1);
-                g.connect(i,i-4,1);
-                g.connect(i,i-3,1);
-                g.connect(i,i-2,1);
-                g.connect(i,i-10,1);
-                g.connect(i,i-11,1);
-            }
-            i++;
-        }
-        System.out.println(g.nodeSize());
-        System.out.println(g.edgeSize());
-
-
-    }
-
 }

@@ -252,10 +252,10 @@ class WGraph_AlgoTest {
       Assertions.assertNull(graph.getGraph().getNode(1992));
       weighted_graph g20 = new WGraph_DS();
       g20.addNode(2);
-      Assertions.assertEquals(-1,g20.getEdge(1,1));
+      Assertions.assertEquals(0,g20.getEdge(1,1));
       g20.addNode(1);
       g20.connect(1,1,0);
-      Assertions.assertEquals(-1,g20.getEdge(1,1));
+      Assertions.assertEquals(0,g20.getEdge(1,1));
 
 
   }
