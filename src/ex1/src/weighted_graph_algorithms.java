@@ -1,4 +1,4 @@
-package ex1;
+package ex1.src;
 
 import java.util.List;
 /**
@@ -19,24 +19,24 @@ public interface weighted_graph_algorithms {
      * Init the graph on which this set of algorithms operates on.
      * @param g
      */
-    public void init(weighted_graph g);
+    void init(weighted_graph g);
 
     /**
      * Return the underlying graph of which this class works.
      * @return
      */
-    public weighted_graph getGraph();
+    weighted_graph getGraph();
     /**
      * Compute a deep copy of this weighted graph.
      * @return
      */
-    public weighted_graph copy();
+    weighted_graph copy();
     /**
      * Returns true if and only if (iff) there is a valid path from EVREY node to each
      * other node. NOTE: assume ubdirectional graph.
      * @return
      */
-    public boolean isConnected();
+    boolean isConnected();
     /**
      * returns the length of the shortest path between src to dest
      * Note: if no such path --> returns -1
@@ -44,7 +44,7 @@ public interface weighted_graph_algorithms {
      * @param dest - end (target) node
      * @return
      */
-    public double shortestPathDist(int src, int dest);
+    double shortestPathDist(int src, int dest);
     /**
      * returns the the shortest path between src to dest - as an ordered List of nodes:
      * src--> n1-->n2-->...dest
@@ -54,7 +54,7 @@ public interface weighted_graph_algorithms {
      * @param dest - end (target) node
      * @return
      */
-    public List<node_info> shortestPath(int src, int dest);
+    List<node_info> shortestPath(int src, int dest);
 
     /**
      * Saves this weighted (undirected) graph to the given
@@ -62,7 +62,7 @@ public interface weighted_graph_algorithms {
      * @param file - the file name (may include a relative path).
      * @return true - iff the file was successfully saved
      */
-    public boolean save(String file);
+    boolean save(String file);
 
     /**
      * This method load a graph to this graph algorithm.
@@ -72,5 +72,5 @@ public interface weighted_graph_algorithms {
      * @param file - file name
      * @return true - iff the graph was successfully loaded.
      */
-    public boolean load(String file);
+    boolean load(String file);
 }

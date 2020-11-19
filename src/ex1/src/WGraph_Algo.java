@@ -1,5 +1,4 @@
-package ex1;
-import ex1.WGraph_DS.*;
+package ex1.src;
 
 import java.io.*;
 import java.util.*;
@@ -19,9 +18,9 @@ public class WGraph_Algo implements weighted_graph_algorithms,java.io.Serializab
     /**
      * This class used in Dijkstra's Algorithm
      */
-    private class subNode implements Comparable<subNode>{
+    private static class subNode implements Comparable<subNode>{
         private double _weight = Double.POSITIVE_INFINITY;
-        private int _parent;//represent the node thats this subNode came from
+        private final int _parent;//represent the node thats this subNode came from
         private final int _currentKey;
 
         public subNode(double weight, int parent, int key) {
@@ -118,12 +117,8 @@ public class WGraph_Algo implements weighted_graph_algorithms,java.io.Serializab
     @Override
     public boolean isConnected() {
         if (this.graph.nodeSize() == 0) return true;//empty graph is connected
-        if (this.Bfs(this.graph.getV().iterator().next().getKey()).size() == this.graph.nodeSize()) {
-            return true;
-        }//if the list size that was returned from the Bfs=this graph size>>>this graph is connected
-        else {
-            return false;
-        }
+        //if the list size that was returned from the Bfs=this graph size>>>this graph is connected
+        return this.Bfs(this.graph.getV().iterator().next().getKey()).size() == this.graph.nodeSize();
     }
 
     /**
@@ -236,7 +231,7 @@ public class WGraph_Algo implements weighted_graph_algorithms,java.io.Serializab
             Iterator<node_info> it = listOfNei.iterator();
             while (it.hasNext()) {
                 node_info node = it.next();
-                if (node.getInfo() == "white") {//if the first nei isnt visited
+                if (node.getInfo().equals("white")) {//if the first nei isnt visited
                     queue.add(node);//add him to the queue
                     list.add(node);//add him to the list
                     node.setInfo("grey");//mark him as visited

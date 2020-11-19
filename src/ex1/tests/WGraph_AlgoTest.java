@@ -1,10 +1,11 @@
-import ex1.*;
+package ex1.tests;
+
+import ex1.src.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 class WGraph_AlgoTest {
@@ -243,7 +244,7 @@ class WGraph_AlgoTest {
         mylist.add(graph.getGraph().getNode(1));
       mylist.add(graph.getGraph().getNode(3));
       mylist.add(graph.getGraph().getNode(4));
-      assertEquals(graph.shortestPath(1, 4), mylist);
+      Assertions.assertEquals(graph.shortestPath(1, 4), mylist);
       Assertions.assertFalse(graph.isConnected());
       graph.getGraph().connect(4,5,2);
       Assertions.assertTrue(graph.isConnected());
