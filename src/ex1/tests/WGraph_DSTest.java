@@ -1,8 +1,13 @@
+<<<<<<< HEAD:src/ex1/tests/WGraph_DSTest.java
 package ex1.tests;
 
 import ex1.src.WGraph_DS;
 import ex1.src.node_info;
 import ex1.src.weighted_graph;
+=======
+
+import ex1.*;
+>>>>>>> 0ae55945f1164fbef3ef7a89412bdd3dffcffae7:Tests/WGraph_DSTest.java
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.Iterator;
@@ -13,6 +18,10 @@ import java.util.Iterator;
  */
 
 class WGraph_DSTest {
+<<<<<<< HEAD:src/ex1/tests/WGraph_DSTest.java
+=======
+    
+>>>>>>> 0ae55945f1164fbef3ef7a89412bdd3dffcffae7:Tests/WGraph_DSTest.java
     public weighted_graph graphCreator() {
         weighted_graph graph = new WGraph_DS();
         int i = 1, size = 5;
@@ -281,4 +290,8 @@ class WGraph_DSTest {
         Assertions.assertEquals(10999879,g.edgeSize());
         Assertions.assertEquals(1000000,g.nodeSize());
     }
+<<<<<<< HEAD:src/ex1/tests/WGraph_DSTest.java
 }
+=======
+}
+>>>>>>> 0ae55945f1164fbef3ef7a89412bdd3dffcffae7:Tests/WGraph_DSTest.java

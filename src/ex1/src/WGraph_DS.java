@@ -1,4 +1,8 @@
+<<<<<<< HEAD:src/ex1/src/WGraph_DS.java
 package ex1.src;
+=======
+package ex1;
+>>>>>>> 0ae55945f1164fbef3ef7a89412bdd3dffcffae7:src/ex1/WGraph_DS.java
 import java.util.*;
 
 /**
