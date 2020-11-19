@@ -1,9 +1,7 @@
-import ex1.node_info;
+
 import ex1.*;
-import ex1.weighted_graph;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ex1.WGraph_DS;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -12,7 +10,7 @@ import java.util.Random;
  */
 
 class WGraph_DSTest {
-    private static Random _rnd = null;
+    private static final Random _rnd = null;
     public weighted_graph graphCreator() {
         weighted_graph graph = new WGraph_DS();
         int i = 1, size = 5;
@@ -241,5 +239,44 @@ class WGraph_DSTest {
         Assertions.assertEquals(15,g10.getMC());//node 2 have 4 neighbors so the MC should be 10+4 and +1 to remove node2
 
 
+    }
+
+    /**
+     * Test that this is possible to build a 1 mil nodes graph and 10mil edges (almost 11 mil)
+     * note:in my computer it took seven seconds.
+     */
+    @Test
+    void milTenMil(){
+        weighted_graph g=new WGraph_DS();
+     int i=11,size=1000000;
+     g.addNode(0);
+     g.addNode(1);
+     g.addNode(2);
+     g.addNode(3);
+     g.addNode(4);
+     g.addNode(5);
+     g.addNode(6);
+     g.addNode(7);
+     g.addNode(8);
+     g.addNode(9);
+     g.addNode(10);
+     while(i<size){
+        g.addNode(i);
+        g.connect(i-1,i,1);
+        g.connect(i-2,i,1);
+        g.connect(i-3,i,1);
+        g.connect(i-4,i,1);
+        g.connect(i-5,i,1);
+        g.connect(i-6,i,1);
+        g.connect(i-7,i,1);
+        g.connect(i-8,i,1);
+        g.connect(i-9,i,1);
+        g.connect(i-10,i,1);
+        g.connect(i-11,i,1);
+
+        i++;
+     }
+        Assertions.assertEquals(10999879,g.edgeSize());
+        Assertions.assertEquals(1000000,g.nodeSize());
     }
 }
