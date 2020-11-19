@@ -3,14 +3,14 @@ import ex1.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import java.util.Iterator;
-import java.util.Random;
+
 
 /**
  * This is a test class for WGraph_DS, each method has a separate test.
  */
 
 class WGraph_DSTest {
-    private static final Random _rnd = null;
+    
     public weighted_graph graphCreator() {
         weighted_graph graph = new WGraph_DS();
         int i = 1, size = 5;
